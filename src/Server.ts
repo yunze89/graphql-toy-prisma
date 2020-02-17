@@ -8,7 +8,6 @@ import BaseRouter from './routes';
 import graphqlHttp from 'express-graphql';
 import {makeExecutableSchema} from 'graphql-tools';
 
-// @ts-ignore
 import resolvers from './schema/resolvers';
 import typeDefs from './schema/type';
 
