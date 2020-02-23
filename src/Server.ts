@@ -5,11 +5,14 @@ import logger from 'morgan';
 import path from 'path';
 import BaseRouter from './routes';
 
+// [graphql] import graphql library module
 import graphqlHttp from 'express-graphql';
 import {makeExecutableSchema} from 'graphql-tools';
 
+// [graphql] import type, resolver implementation
 import resolvers from './schema/resolvers';
 import typeDefs from './schema/type';
+
 
 // Init express
 const app = express();
@@ -20,9 +23,11 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use('/api', BaseRouter);
+
+// [graphql] graphql endpoint 추가
 app.use('/graphql',graphqlHttp({
-    graphiql: true,
-    schema: makeExecutableSchema({typeDefs, resolvers})
+    graphiql: true,                                     // graphql 테스트 툴 활성화
+    schema: makeExecutableSchema({typeDefs, resolvers}) // 구현한 type, resolver 함수를 schema로 생성 (feat. graphql-tools)
 }));
 
 /**
