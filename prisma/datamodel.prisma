@@ -1,0 +1,15 @@
+type User {
+    id: ID! @id
+    pw: String
+    name: String
+    email: String
+    posts: [Post] @scalarList(strategy: RELATION)
+}
+
+type Post {
+    title: String!
+    description: String
+    id: ID! @id
+    writer: User!
+    tags: [String] @scalarList(strategy: RELATION)
+}

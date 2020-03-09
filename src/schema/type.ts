@@ -11,7 +11,7 @@ const typeDefs = `
         description: String,
         id: ID!,
         writer: User!,              #해당 field를 위한 resolver 함수 구현
-        tags: [String]
+        tags: [String],
     }
     ## Query 정의 (조회) : entry point
     type Query{

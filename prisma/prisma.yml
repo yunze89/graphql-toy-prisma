@@ -1,0 +1,13 @@
+#prisma API의 HTTP endpoint
+#endpoint: ''endpoint: https://eu1.prisma.sh/yunsuk-hong/graphql_toy/dev
+
+
+#데이터 모델을 포함하고 있는 파일의 이름
+# : 이 파일 기반으로 API 서버에서 사용할 Prisma Client가 생성됨
+datamodel: datamodel.prisma
+
+#생성될 prisma client의 언어와 생성 위치 지정
+generate:
+  - generator: javascript-client
+    output: ../src/generated/prisma-client
+
