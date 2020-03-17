@@ -1,4 +1,9 @@
 import { IResolvers } from 'graphql-tools';
+import bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
+
+const APP_SECRET = 'test';
+
 // import Posts from '../hardcode/post';   // 하드코딩 db 데이터 (db에서 fetch한 데이터 모델이라고 가정)
 // import Users from '../hardcode/user';   // 하드코딩 db 데이터 (db에서 fetch한 데이터 모델이라고 가정)
 
@@ -27,6 +32,32 @@ const resolvers :IResolvers = {
         posts: (_, args, context) => context.prisma.posts(),
         post: (_, {id}, context) => context.prisma.post( {id}),
         user: (_, {id}, context) => context.prisma.user({id}),
+
+        // 로그인
+        signIn: async(_, args, context) => {
+            // email로 user query (type정의시 email을 @unique로 지정 필요)
+            const user = await context.prisma.user({
+                email: args.email
+            });
+
+            // user 검색 결과 여부 확인
+            if(!user)
+                throw new Error('No such user found');
+
+            // password 확인
+            const valid = await bcrypt.compare(args.pw, user.pw);
+            if(!valid)
+                throw new Error('Invalid password');
+
+            // password 검증 된 경우 JWT 생성
+            const token = jwt.sign({userId: user.id}, APP_SECRET);
+
+            // AuthPayload type 반환
+            return{
+                token,
+                user
+            }
+        }
     },
     Mutation: {
         // 게시물 작성
@@ -39,13 +70,25 @@ const resolvers :IResolvers = {
                 tags
             }),
         // 회원가입
-        signUp: (_, {email, pw, name}, context) =>
-            // prisma client 인스턴스의 메서드 이용
-            context.prisma.createUser({
-                email,
+        signUp: async (_, args, context) => {
+            // user의 비밀번호 암호화
+            const pw = await bcrypt.hash(args.pw, 10);
+
+            // prisma client 인스턴스의 메서드 이용하여 새로운 user 생성
+            const user = context.prisma.createUser({
+                ...args,    // email, name parameter 값
                 pw,
-                name
-            })
+            });
+
+            // APP_SCRET 값으로 서명된 JWT 생성
+            const token = jwt.sign({userId: user.id}, APP_SECRET);
+
+            // AuthPayload type 반환
+            return {
+                token,
+                user
+            }
+        }
     }
 };
 
