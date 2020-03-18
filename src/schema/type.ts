@@ -26,7 +26,7 @@ const typeDefs = `
     }
     ## Mutation 정의 (수정성 요청) : entry point
     type Mutation{
-        writePost(writerId: ID, title: String, description: String, tags:[String]): Post
+        writePost(title: String, description: String, tags:[String]): Post
         signUp(email: String!, pw: String!, name: String!): AuthPayload     #User에서 수정
     }
 `

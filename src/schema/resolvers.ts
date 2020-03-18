@@ -1,8 +1,8 @@
 import { IResolvers } from 'graphql-tools';
 import bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-
-const APP_SECRET = 'test';
+import {APP_SECRET} from 'src/const/const';
+import {getUserId} from 'src/util/util.js';
 
 // import Posts from '../hardcode/post';   // 하드코딩 db 데이터 (db에서 fetch한 데이터 모델이라고 가정)
 // import Users from '../hardcode/user';   // 하드코딩 db 데이터 (db에서 fetch한 데이터 모델이라고 가정)
@@ -61,14 +61,17 @@ const resolvers :IResolvers = {
     },
     Mutation: {
         // 게시물 작성
-        writePost: (_, {writer, title, description, tags}, context) =>
-            // prisma client 인스턴스의 메서드 이용
-            context.prisma.createPost({
-                writer,
+        writePost: (_, {title, description, tags}, context) =>{
+            // jwt에서 userId 꺼내온다
+            const userId = getUserId(context);
+
+            return context.prisma.createPost({
+                writer: {connect: {id: userId} },       // **중첩 객체 쓰기 : userId를 이용하여 User를 연결한다
                 title,
                 description,
                 tags
-            }),
+            });
+        },
         // 회원가입
         signUp: async (_, args, context) => {
             // user의 비밀번호 암호화

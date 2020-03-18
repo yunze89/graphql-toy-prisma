@@ -31,7 +31,12 @@ app.use('/api', BaseRouter);
 app.use('/graphql',graphqlHttp({
     graphiql: true,                                     // graphql 테스트 툴 활성화
     schema: makeExecutableSchema({typeDefs, resolvers}), // 구현한 type, resolver 함수를 schema로 생성 (feat. graphql-tools)
-    context: {prisma}                                     // prisma client 인스턴스를 context에 추가하여 resolve에서 접근할 수 있도록 함.
+    context: (request: any) => {
+        return {
+            ...request,
+            prisma
+        }
+    }                                     // prisma client 인스턴스를 context에 추가하여 resolve에서 접근할 수 있도록 함.
 }));
 
 /**
