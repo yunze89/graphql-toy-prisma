@@ -13,7 +13,8 @@ import {makeExecutableSchema} from 'graphql-tools';
 import { prisma } from './generated/prisma-client';
 
 // [graphql] import type, resolver implementation
-import resolvers from './schema/resolvers';
+// import resolvers from './schema/resolvers';
+import resolvers from './resolvers/index';
 import typeDefs from './schema/type';
 
 
@@ -29,15 +30,12 @@ app.use('/api', BaseRouter);
 
 // [graphql] graphql endpoint 추가
 app.use('/graphql',graphqlHttp({
-    graphiql: true,                                     // graphql 테스트 툴 활성화
-    schema: makeExecutableSchema({typeDefs, resolvers}), // 구현한 type, resolver 함수를 schema로 생성 (feat. graphql-tools)
-    context: (request: any) => {
-        return {
-            ...request,
-            prisma
-        }
-    }                                     // prisma client 인스턴스를 context에 추가하여 resolve에서 접근할 수 있도록 함.
-}));
+        graphiql: true,                                     // graphql 테스트 툴 활성화
+        schema: makeExecutableSchema({typeDefs, resolvers}), // 구현한 type, resolver 함수를 schema로 생성 (feat. graphql-tools)
+        context: {prisma}
+        // prisma client 인스턴스를 context에 추가하여 resolve에서 접근할 수 있도록 함.
+    })
+);
 
 /**
  * Point express to the 'views' directory. If you're using a

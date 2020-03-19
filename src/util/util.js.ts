@@ -8,7 +8,7 @@ export const getUserId = (context:any) => {
     if(Authorization){
         // context로 부터 authorization header를 가져와 해당 User의 id를 꺼내 반환한다
         const token = Authorization.replace('Bearer ','');
-        const tokenValue = jwt.verify(token, APP_SECRET);
+        const tokenValue:any= jwt.verify(token, APP_SECRET);
         return tokenValue.userId;
     }
 

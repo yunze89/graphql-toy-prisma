@@ -78,7 +78,7 @@ const resolvers :IResolvers = {
             const pw = await bcrypt.hash(args.pw, 10);
 
             // prisma client 인스턴스의 메서드 이용하여 새로운 user 생성
-            const user = context.prisma.createUser({
+            const user = await context.prisma.createUser({
                 ...args,    // email, name parameter 값
                 pw,
             });
