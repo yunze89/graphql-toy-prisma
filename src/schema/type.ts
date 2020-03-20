@@ -22,13 +22,17 @@ const typeDefs = `
         posts: [Post]               #posts list 조회
         post(id: ID): Post          #argument query(post id 조건 검색)
         user(id: ID): User          #argument query(user id 조건 검색)
-        signIn(emali: String!, pw: String!): AuthPayload
+        signIn(email: String!, pw: String!): AuthPayload
     }
     ## Mutation 정의 (수정성 요청) : entry point
     type Mutation{
         writePost(title: String, description: String, tags:[String]): Post
         signUp(email: String!, pw: String!, name: String!): AuthPayload     #User에서 수정
     }
-`
+    ## Subscription 정의 (실시간 push)
+    type Subscription{
+        newPost: Post
+    }
+`;
 
 export default typeDefs;

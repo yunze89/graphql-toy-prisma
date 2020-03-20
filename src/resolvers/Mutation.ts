@@ -13,7 +13,7 @@ export const Mutation = {
             writer: {connect: {id: userId}},       // **중첩 객체 쓰기 : userId를 이용하여 User를 연결한다
             title,
             description,
-            tags
+            tags : {set: tags}                     // **Array 넣기 위해선 이와 같은 구조로 써주어야 한다. prisma client의 PostCreatetagsInput 참고
         });
     },
     // 회원가입
