@@ -2,10 +2,12 @@ import {getUserId} from '../util/util.js';
 import bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import {APP_SECRET} from '../const/const';
+import {pubSub} from '../index';
+import {Post} from '../generated/prisma-client';
 
 export const Mutation = {
     // 게시물 작성
-    writePost: (_: any, {title, description, tags}: any, context: any) => {
+    writePost: async(_: any, {title, description, tags}: any, context: any) => {
         // jwt에서 userId 꺼내온다
         const userId = getUserId(context);
 
@@ -14,6 +16,11 @@ export const Mutation = {
             title,
             description,
             tags : {set: tags}                     // **Array 넣기 위해선 이와 같은 구조로 써주어야 한다. prisma client의 PostCreatetagsInput 참고
+            // tslint:disable-next-line:no-shadowed-variable
+        }).then((Post:Post)=>{
+            console.log(Post);
+            pubSub.publish('newPost',{Post});
+            return Post;
         });
     },
     // 회원가입

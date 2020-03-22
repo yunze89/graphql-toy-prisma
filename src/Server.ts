@@ -16,7 +16,7 @@ import { prisma } from './generated/prisma-client';
 // import resolvers from './schema/resolvers';
 import resolvers from './resolvers/index';
 import typeDefs from './schema/type';
-
+import {executableSchema} from './shcema';
 
 // Init express
 const app = express();
@@ -31,7 +31,7 @@ app.use('/api', BaseRouter);
 // [graphql] graphql endpoint 추가
 app.use('/graphql',graphqlHttp((request)=>({
         graphiql: true,                                     // graphql 테스트 툴 활성화
-        schema: makeExecutableSchema({typeDefs, resolvers}), // 구현한 type, resolver 함수를 schema로 생성 (feat. graphql-tools)
+        schema: executableSchema, // makeExecutableSchema({typeDefs, resolvers}), // 구현한 type, resolver 함수를 schema로 생성 (feat. graphql-tools)
         context: {
             prisma,
             request
@@ -54,6 +54,18 @@ app.use(express.static(staticDir));
 app.get('*', (req: Request, res: Response) => {
     res.sendFile('index.html', {root: viewsDir});
 });
+
+/*// websocket server
+const server = createServer(app);
+const subscriptionServer = new SubscriptionServer({
+        execute,
+        subscribe,
+        schema: makeExecutableSchema({typeDefs, resolvers})},
+    {
+        server,
+        path: '/subscriptions'
+    });*/
+// server.listen(port, () => subscriptionServer);
 
 // Export express instance
 export default app;
