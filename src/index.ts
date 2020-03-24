@@ -13,8 +13,6 @@ import {executableSchema} from './shcema';
 // Start the server
 const port = Number(process.env.PORT || 3000);
 
-// const server = createServer(app);
-
 const server = createServer(app);
 
 /*app.listen(port, () => {
