@@ -51,17 +51,5 @@ app.get('*', (req: Request, res: Response) => {
     res.sendFile('index.html', {root: viewsDir});
 });
 
-/*// websocket server
-const server = createServer(app);
-const subscriptionServer = new SubscriptionServer({
-        execute,
-        subscribe,
-        schema: makeExecutableSchema({typeDefs, resolvers})},
-    {
-        server,
-        path: '/subscriptions'
-    });*/
-// server.listen(port, () => subscriptionServer);
-
 // Export express instance
 export default server;
