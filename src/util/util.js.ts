@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import {APP_SECRET} from 'src/const/const';
 
-export const getUserId = (context:any) => {
+export const getUserId= (context:any) => {
 
     // **http header에 "Authorization : Bearer ${token}" 추가되어 있는 request 이어야 함**
     // 토큰은 서버로 들어오는 HTTP 요청의 authorization 헤더에서 얻을 수 있다.
