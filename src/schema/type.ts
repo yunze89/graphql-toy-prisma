@@ -19,7 +19,7 @@ const typeDefs = `
     }
     ## Query 정의 (조회) : entry point
     type Query{
-        posts: [Post]               #posts list 조회
+        posts(filter: String): [Post]               #posts list 조회
         post(id: ID): Post          #argument query(post id 조건 검색)
         user(id: ID): User          #argument query(user id 조건 검색)
         signIn(email: String!, pw: String!): AuthPayload

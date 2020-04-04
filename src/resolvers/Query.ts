@@ -4,7 +4,18 @@ import {APP_SECRET} from '../const/const';
 
 export const Query = {
     // prisma client 인스턴스의 메서드 이용
-    posts: (_:any, args:any, context:any) => context.prisma.posts(),
+    posts: async (_:any, args:any, context:any) => {
+        const where = args.filter ? {
+                OR: [
+                    { description_contains: args.filter},   // description 포함
+                    { title_contains: args.filter}          // title 포함되어 있는 것 filtering
+                ],
+            } : {};
+        const posts = await context.prisma.posts({
+            where
+        });
+        return posts;
+    },
     post: (_:any, {id}:any, context:any) => context.prisma.post( {id}),
     user: (_:any, {id}:any, context:any) => context.prisma.user({id}),
 

@@ -12,6 +12,8 @@ import {getUserId} from 'src/util/util.js';
 // query의 argument를 전달받기 위해선 두번째 파라미터를 사용
 // prisma client를 사용하기 위해선 세번째 파라미터를 사용
 
+/* @deprecated resolvers 디렉토리로 이동 및 분리 */
+/*
 const resolvers :IResolvers = {
     Post:{
         // post type의 User(post의 writer field) 객체 접근하기 위한 resolver : parent는 Post 객체
@@ -96,3 +98,4 @@ const resolvers :IResolvers = {
 };
 
 export default resolvers;
+*/
